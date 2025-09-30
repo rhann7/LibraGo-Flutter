@@ -10,12 +10,14 @@ class AuthRequest {
     required this.email,
     required this.password
   });
+
   Map<String, dynamic> toJsonLogin() {
     return {
       'email': email,
       'password': password
     };
   }
+  
   Map<String, dynamic> toJsonRegister() {
     return {
       'name': name,
