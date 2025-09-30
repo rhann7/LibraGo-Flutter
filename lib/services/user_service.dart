@@ -32,15 +32,23 @@ class UserService {
     }
   }
 
-  Future<Map<String, dynamic>> update({required String username, required Map<String, dynamic> data}) async {
+  Future<Map<String, dynamic>> update({required String username, required Map<String, dynamic> data, String? avatar}) async {
     try {
       final token = await StorageService.getToken();
+
+      dynamic requestData = data;
+      Options options = Options(headers: {'Authorization': 'Bearer $token'});
+
+      if (avatar != null) {
+        requestData = FormData.fromMap({
+          ...data, 'avatar': await MultipartFile.fromFile(avatar)
+        });
+      }
+
       final response = await _dio.put(
         Apis.profile.replaceFirst('{user:username}', username),
-        data: data,
-        options: Options(headers: {
-          'Authorization': 'Bearer $token'
-        })
+        data: requestData,
+        options: options
       );
 
       return response.data;
