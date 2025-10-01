@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:librago/pages/auth/login.dart';
+import 'package:librago/pages/auth/register.dart';
+import 'package:librago/pages/home.dart';
 import 'package:librago/pages/splash_screen.dart';
-import 'pages/login.dart';
-import 'pages/register.dart';
-import 'pages/home.dart';
+
 
 void main() {
   runApp(const MyApp());

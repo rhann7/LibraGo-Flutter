@@ -17,7 +17,7 @@ class AuthRequest {
       'password': password
     };
   }
-
+  
   Map<String, dynamic> toJsonRegister() {
     return {
       'name': name,

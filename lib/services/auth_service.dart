@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:librago/models/auth.dart';
 import 'api_service.dart';
 import 'storage_service.dart';
+import '../models/auth.dart';
 
 class AuthService {
   final Dio _dio = Dio(BaseOptions(
@@ -43,7 +43,7 @@ class AuthService {
   Future<Map<String, dynamic>> login(AuthRequest req) async {
     try {
       final response = await _dio.post(
-        Apis.login, 
+        Apis.login,
         data: req.toJsonLogin()
       );
 
@@ -62,13 +62,13 @@ class AuthService {
       final response = await _dio.post(
         Apis.logout,
         options: Options(headers: {
-          'Authorization': 'Bearer $token',
+          'Authorization': 'Bearer $token'
         })
       );
-
+      
       return response.data;
-    } catch (e) {
-      return {'status': 'error', 'message': e.toString()};
+    } on DioException catch (e) {
+      return {'status': 'error', 'message': e.message};
     }
   }
 }
