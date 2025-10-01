@@ -6,25 +6,39 @@ import 'storage_service.dart';
 class AuthService {
   final Dio _dio = Dio(BaseOptions(
     baseUrl: Apis.baseUrl,
-    connectTimeout: const Duration(seconds: 5),
-    receiveTimeout: const Duration(seconds: 5),
+    connectTimeout: const Duration(seconds: 15),
+    receiveTimeout: const Duration(seconds: 15),
     headers: {
       'Accept': 'application/json'
     }
   ));
-
+  
   Future<Map<String, dynamic>> register(AuthRequest req) async {
-    try {
-      final response = await _dio.post(
-        Apis.register,
-        data: req.toJsonRegister()
-      );
+  try {
+    final formData = FormData.fromMap({
+      "name": req.name,
+      "username": req.username,
+      "email": req.email,
+      "password": req.password,
+    });
 
-      return response.data;
-    } on DioException catch (e) {
-      return {'status': 'error', 'message': e.message};
-    }
+    final response = await _dio.post(
+      '/register',
+      data: formData,
+      options: Options(
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      ),
+    );
+
+    return response.data;
+  } on DioException catch (e) {
+    print("ERROR RESPONSE: ${e.response?.data}");
+    return {"status": "error", "message": e.response?.data.toString()};
   }
+}
+
 
   Future<Map<String, dynamic>> login(AuthRequest req) async {
     try {
